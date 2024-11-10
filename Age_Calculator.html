@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="calculator.css">
+</head>
+<body>
+    <div class="cal">
+        <div class="container">
+            <h1 class="fir_h1">Age Calculator</h1>
+            <div class="birth">
+                <label class="label">Date Of Birth</label>
+                <div class="inputbox">
+                    <input type="number" class="birth_inp" id="day" placeholder="DD" min="1" max="31">
+                    <input type="number" class="birth_inp" id="month" placeholder="MM" min="1" max="12">
+                    <input type="number" class="birth_inp" id="year" placeholder="YYYY" min="1900" max="2100">
+                </div>
+            </div>
+            <div class="outbox">
+                <span class="out_sp" id="sp_year">YYYY</span> <span class="p_out">Year</span>
+                <span class="out_sp" id="sp_month">MM</span> <span class="p_out">Month</span>
+                <span class="out_sp" id="sp_day">DD</span> <span class="p_out">Day</span>
+            </div>
+            <button id="sub_btn">Calculate</button>
+        </div>
+    </div>
+    <script>
+        document.getElementById('sub_btn').addEventListener('click', calculate);
+
+        function calculate() {
+            let d1 = parseInt(document.getElementById('day').value);
+            let m1 = parseInt(document.getElementById('month').value);
+            let y1 = parseInt(document.getElementById('year').value);
+            
+            let today = new Date();
+            let y2 = today.getFullYear();
+            let m2 = today.getMonth() + 1; // Months are zero-based
+            let d2 = today.getDate();
+
+            let yearbox = document.getElementById('sp_year');
+            let monthbox = document.getElementById('sp_month');
+            let daybox = document.getElementById('sp_day');
+
+            let d, m, y;
+            let monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+            if (y1 <= y2 && m1 >= 1 && m1 <= 12 && d1 >= 1 && d1 <= monthDays[m1 - 1]) {
+                if (d1 > d2) {
+                    d2 += monthDays[m2 - 1];
+                    m2--;
+                }
+                if (m1 > m2) {
+                    m2 += 12;
+                    y2--;
+                }
+                d = d2 - d1;
+                m = m2 - m1;
+                y = y2 - y1;
+
+                daybox.textContent = d;
+                monthbox.textContent = m;
+                yearbox.textContent = y;
+
+            } else {
+                let inputs = document.getElementsByClassName('birth_inp');
+                Array.from(inputs).forEach((e) => {
+                    e.value = '';
+                });
+                alert('Please enter a valid date');
+            }
+        }
+    </script>
+</body>
+</html>
